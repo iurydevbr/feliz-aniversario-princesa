@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário, Thalya 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose: #c4687a;
+    --rose-light: #f0c0ca;
+    --rose-pale: #fdf0f2;
+    --gold: #b89a6a;
+    --gold-light: #e8d5b0;
+    --cream: #fdf8f4;
+    --ink: #2c1a1a;
+    --ink-soft: #6b4a4a;
+    --petal1: #f7c5cc;
+    --petal2: #f4a8b8;
+    --petal3: #e8849a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── INTRO SCREEN ── */
+  #intro {
+    position: fixed; inset: 0;
+    background: var(--cream);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 100;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #intro.hidden { opacity: 0; visibility: hidden; }
+
+  .intro-petals {
+    position: absolute; inset: 0;
+    overflow: hidden; pointer-events: none;
+  }
+  .petal-bg {
+    position: absolute;
+    border-radius: 50% 0 50% 0;
+    opacity: 0.18;
+    animation: floatPetal linear infinite;
+  }
+
+  @keyframes floatPetal {
+    0%   { transform: translateY(-60px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.18; }
+    90%  { opacity: 0.18; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .intro-envelope {
+    width: 280px; height: 190px;
+    position: relative;
+    cursor: pointer;
+    filter: drop-shadow(0 12px 40px rgba(196,104,122,0.18));
+    transition: transform 0.3s ease;
+  }
+  .intro-envelope:hover { transform: scale(1.03); }
+
+  .env-body {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #fff8fa 60%, #fde8ed);
+    border-radius: 4px 4px 8px 8px;
+    border: 1.5px solid var(--rose-light);
+    position: absolute; bottom: 0;
+  }
+
+  .env-flap {
+    width: 0; height: 0;
+    border-left: 140px solid transparent;
+    border-right: 140px solid transparent;
+    border-top: 105px solid #f8dce3;
+    position: absolute; top: 0; left: 0;
+    transform-origin: top center;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+    filter: drop-shadow(0 4px 8px rgba(196,104,122,0.12));
+  }
+  .env-flap.open { transform: rotateX(180deg); }
+
+  .env-flap-inner {
+    width: 0; height: 0;
+    border-left: 140px solid transparent;
+    border-right: 140px solid transparent;
+    border-bottom: 98px solid #fef3f5;
+    position: absolute; top: 1.5px; left: 0; z-index: 2;
+  }
+
+  .env-left {
+    width: 0; height: 0;
+    border-top: 95px solid transparent;
+    border-bottom: 95px solid transparent;
+    border-left: 125px solid #fce4ea;
+    position: absolute; bottom: 0; left: 0;
+  }
+  .env-right {
+    width: 0; height: 0;
+    border-top: 95px solid transparent;
+    border-bottom: 95px solid transparent;
+    border-right: 125px solid #f9d8e0;
+    position: absolute; bottom: 0; right: 0;
+  }
+
+  .env-letter {
+    position: absolute;
+    width: 85%; left: 7.5%;
+    background: #fff;
+    border-radius: 3px;
+    bottom: 16px;
+    z-index: 1;
+    overflow: hidden;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, height 0.7s ease 0.3s;
+    height: 70px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #f0d8de;
+  }
+  .env-letter.open {
+    transform: translateY(-120px);
+    height: 90px;
+  }
+  .env-letter-preview {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--rose); letter-spacing: 2px;
+    text-align: center;
+  }
+
+  .env-seal {
+    position: absolute;
+    width: 46px; height: 46px;
+    background: var(--rose);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    z-index: 5;
+    top: calc(50% - 23px); left: calc(50% - 23px);
+    box-shadow: 0 2px 12px rgba(196,104,122,0.35);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .env-seal.hidden-seal { transform: scale(0); opacity: 0; }
+
+  .intro-hint {
+    margin-top: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-style: italic;
+    color: var(--ink-soft); letter-spacing: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+  /* ── MAIN CONTENT ── */
+  #main { opacity: 0; transition: opacity 1s ease 0.3s; }
+  #main.visible { opacity: 1; }
+
+  /* HEADER */
+  .header {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+  }
+
+  .header-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, #fce8ed 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 80%, #fde8d0 0%, transparent 55%),
+                var(--cream);
+  }
+
+  .floating-petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .fp {
+    position: absolute;
+    border-radius: 50% 0 50% 0;
+    animation: floatPetal linear infinite;
+    opacity: 0;
+  }
+
+  .header-content { position: relative; z-index: 2; text-align: center; }
+
+  .header-tag {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rose); font-weight: 400;
+    margin-bottom: 20px;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+
+  .header-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 12vw, 100px);
+    font-weight: 300; line-height: 1;
+    color: var(--ink);
+    letter-spacing: -1px;
+    animation: fadeUp 1s ease 0.7s both;
+  }
+  .header-name em { color: var(--rose); font-style: italic; }
+
+  .header-divider {
+    width: 60px; height: 1px;
+    background: var(--gold);
+    margin: 24px auto;
+    animation: expand 1s ease 0.9s both;
+  }
+  @keyframes expand { from { width: 0; } to { width: 60px; } }
+
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 4vw, 26px);
+    font-style: italic; font-weight: 300;
+    color: var(--ink-soft);
+    animation: fadeUp 1s ease 1.1s both;
+  }
+
+  .scroll-cue {
+    position: absolute; bottom: 36px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    animation: fadeUp 1s ease 1.5s both;
+  }
+  .scroll-cue span { font-size: 10px; letter-spacing: 3px; color: var(--ink-soft); text-transform: uppercase; }
+  .scroll-arrow {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--rose-light), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100% { transform: scaleY(1); opacity: 0.6; } 50% { transform: scaleY(1.3); opacity: 1; } }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── LETTER SECTION ── */
+  .letter-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 32px;
+    position: relative;
+  }
+
+  .letter-paper {
+    background: #fff;
+    border-radius: 2px;
+    padding: 64px 72px;
+    position: relative;
+    box-shadow: 0 2px 60px rgba(196,104,122,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    border: 1px solid #f0e0e4;
+  }
+
+  @media (max-width: 600px) {
+    .letter-paper { padding: 40px 28px; }
+  }
+
+  .letter-paper::before {
+    content: '';
+    position: absolute; top: 0; left: 72px; right: 72px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--rose-light), transparent);
+  }
+
+  .letter-date {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.9;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .letter-body p { margin-bottom: 1.5em; }
+  .letter-body p:last-child { margin-bottom: 0; }
+
+  .letter-body .greeting {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 600;
+    color: var(--rose);
+    margin-bottom: 1.2em;
+  }
+
+  .letter-body .highlight {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .letter-sig {
+    margin-top: 48px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .letter-sig .sig-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ink-soft); font-family: 'Lato', sans-serif;
+  }
+  .letter-sig .sig-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-style: italic; font-weight: 300;
+    color: var(--rose);
+    line-height: 1;
+    margin-top: 8px;
+  }
+
+  .letter-rose {
+    position: absolute;
+    top: -18px; right: 52px;
+    font-size: 32px;
+    filter: drop-shadow(0 2px 6px rgba(196,104,122,0.2));
+  }
+
+  /* ── PHOTOS SECTION ── */
+  .photos-section {
+    padding: 60px 32px 100px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .section-tag {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 300;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 280px 220px;
+    gap: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .photo-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: 260px 260px 200px 200px;
+    }
+  }
+
+  .photo-slot {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #fde8ed, #fdf0f2);
+    border: 1.5px dashed var(--rose-light);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photo-slot:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(196,104,122,0.15); }
+
+  .photo-slot:nth-child(1) { grid-row: span 1; }
+  .photo-slot:nth-child(3) { grid-column: span 2; }
+  .photo-slot:nth-child(4) { display: none; }
+
+  @media (max-width: 600px) {
+    .photo-slot:nth-child(3) { grid-column: span 1; }
+    .photo-slot:nth-child(4) { display: flex; }
+  }
+
+  .photo-slot img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .photo-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 10px;
+    color: var(--rose);
+    pointer-events: none;
+  }
+  .photo-placeholder svg { width: 32px; height: 32px; opacity: 0.5; }
+  .photo-placeholder span { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; }
+
+  .photo-slot input[type="file"] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer;
+  }
+
+  .photo-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 16px 12px;
+    background: linear-gradient(transparent, rgba(44,26,26,0.45));
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; font-style: italic;
+    opacity: 0; transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .photo-slot:hover .photo-caption { opacity: 1; }
+
+  .photos-note {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink-soft); opacity: 0.6;
+  }
+
+  /* ── CONFETTI FINALE ── */
+  .finale {
+    text-align: center;
+    padding: 80px 32px 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .finale-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 8vw, 72px);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .finale-text em { color: var(--rose); font-style: italic; }
+
+  .confetti-container {
+    position: absolute; inset: 0;
+    pointer-events: none; overflow: hidden;
+  }
+  .conf {
+    position: absolute;
+    top: -10px;
+    animation: confettiFall linear infinite;
+    border-radius: 2px;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .finale-hearts {
+    display: flex; gap: 16px; justify-content: center;
+    margin-top: 32px; font-size: 28px;
+    animation: heartBeat 1.5s ease-in-out infinite;
+  }
+  @keyframes heartBeat {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ink-soft); opacity: 0.4;
+    border-top: 1px solid var(--rose-light);
+  }
+
+  /* Animations on scroll */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- INTRO: ENVELOPE -->
+<div id="intro">
+  <div class="intro-petals" id="introPetals"></div>
+  <div class="intro-envelope" id="envelope" onclick="openEnvelope()">
+    <div class="env-body"></div>
+    <div class="env-left"></div>
+    <div class="env-right"></div>
+    <div class="env-flap-inner"></div>
+    <div class="env-flap" id="envFlap"></div>
+    <div class="env-letter" id="envLetter">
+      <div class="env-letter-preview">Para Thalya 🌸</div>
+    </div>
+    <div class="env-seal" id="envSeal">🌸</div>
+  </div>
+  <p class="intro-hint">Clique para abrir</p>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-bg"></div>
+    <div class="floating-petals" id="floatingPetals"></div>
+    <div class="header-content">
+      <p class="header-tag">✦ Uma carta especial ✦</p>
+      <h1 class="header-name">
+        <em>Thalya</em>
+      </h1>
+      <div class="header-divider"></div>
+      <p class="header-sub">Feliz aniversário, meu amor 🌸</p>
+    </div>
+    <div class="scroll-cue">
+      <span>Rolar</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </header>
+
+  <!-- LETTER -->
+  <section class="letter-section reveal">
+    <div class="letter-paper">
+      <div class="letter-rose">🌹</div>
+      <p class="letter-date">19 de abril de 2025</p>
+      <div class="letter-body">
+        <p class="greeting">Feliz aniversário, meu amor!</p>
+        <p>Parece que por mais quatro meses vou ter que voltar a respeitar os mais velhos 😭 <span class="highlight">(ou não?)</span></p>
+        <p>Mais um ano de vida seu inteirinha, ou quase isso. Quero te desejar um ano muito abençoado, cheio de felicidade, e que você consiga aproveitar essa semana tão especial do jeitinho que merece.</p>
+        <p>Torço muito para que você realize todos os seus sonhos e objetivos desse ano, e que aos pouquinhos tudo vá se ajeitando na sua vida.</p>
+        <p>Minha princesa, queria te agradecer de verdade por ser uma pessoa tão especial e tão importante pra mim. Nunca deixe de ser essa mulher incrível que você é: <span class="highlight">dedicada, gentil, atenciosa, carinhosa, amorosa, apaixonante, linda e maravilhosa.</span></p>
+        <p>Resumindo tudo isso… a mulher por quem eu me apaixonei.</p>
+        <p>Thalya, eu te amo muitooo, e a maior honra que eu posso ter é a oportunidade de passar muitos anos da minha vida ao seu lado.</p>
+        <p>Um beijo 😘</p>
+      </div>
+      <div class="letter-sig">
+        <span class="sig-label">Com amor,</span>
+        <span class="sig-name">Iury</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section class="photos-section reveal">
+    <div class="section-header">
+      <p class="section-tag">✦ Memórias ✦</p>
+      <h2 class="section-title">Você em fotos</h2>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo-slot" id="slot1"><div class="photo-caption">Minha favorita 🌸</div></div>
+      <div class="photo-slot" id="slot2"><div class="photo-caption">Sempre linda 💕</div></div>
+      <div class="photo-slot" id="slot3"><div class="photo-caption">Você é especial demais ✨</div></div>
+      <div class="photo-slot" id="slot4" style="display:none;"><div class="photo-caption">Feliz aniversário 🌹</div></div>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <section class="finale reveal">
+    <div class="confetti-container" id="confetti"></div>
+    <div class="finale-text">
+      Feliz aniversário,<br><em>Thalya!</em><br>
+      <span style="font-size:0.55em;font-style:normal;color:var(--ink-soft);">com muito amor do Iury 🌹</span>
+    </div>
+    <div class="finale-hearts">🌸 💕 🌹 💕 🌸</div>
+  </section>
+
+  <footer class="footer">
+    feito com amor ✦ para a mulher mais linda do mundo
+  </footer>
+
+</div>
+
+<script>
+  // =============================================
+  // FOTOS — cole aqui o link direto de cada foto
+  // =============================================
+  const FOTOS = {
+    slot1: 'https://ibb.co/NdyLX8Cb',
+    slot2: 'https://ibb.co/LDJwQXcf',
+    slot3: 'https://ibb.co/G4yVY6MW',
+    slot4: 'https://ibb.co/b5mGxTNb',  // só aparece no celular
+  };
+  // =============================================
+
+  // Carrega as fotos nos slots
+  Object.entries(FOTOS).forEach(([id, url]) => {
+    if (!url || url.includes('link-da-foto')) return;
+    const slot = document.getElementById(id);
+    if (!slot) return;
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    slot.insertBefore(img, slot.firstChild);
+    slot.style.border = 'none';
+  });
+
+  // Generate bg petals on intro
+  const introPetals = document.getElementById('introPetals');
+  const colors = ['#f7c5cc','#f4a8b8','#e8849a','#fce8ed','#f9d0d8'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal-bg';
+    const size = 12 + Math.random() * 22;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${6+Math.random()*8}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    introPetals.appendChild(p);
+  }
+
+  // Open envelope
+  function openEnvelope() {
+    const flap = document.getElementById('envFlap');
+    const letter = document.getElementById('envLetter');
+    const seal = document.getElementById('envSeal');
+    seal.classList.add('hidden-seal');
+    setTimeout(() => {
+      flap.classList.add('open');
+      letter.classList.add('open');
+    }, 200);
+    setTimeout(() => {
+      document.getElementById('intro').classList.add('hidden');
+      document.getElementById('main').classList.add('visible');
+      spawnConfetti();
+    }, 1200);
+  }
+
+  // Floating petals in header
+  const floatingPetals = document.getElementById('floatingPetals');
+  const petalColors = ['#f7c5cc','#f4a8b8','#fce8ed','#e8d5b0'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'fp';
+    const size = 8 + Math.random() * 18;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${petalColors[Math.floor(Math.random()*petalColors.length)]};
+      animation-duration:${7+Math.random()*9}s;
+      animation-delay:${Math.random()*10}s;
+      border-radius:${Math.random()>0.5?'50% 0 50% 0':'50%'};
+    `;
+    floatingPetals.appendChild(p);
+  }
+
+  // Confetti
+  function spawnConfetti() {
+    const container = document.getElementById('confetti');
+    const confColors = ['#c4687a','#f7c5cc','#b89a6a','#e8d5b0','#f4a8b8','#fce8ed'];
+    for (let i = 0; i < 60; i++) {
+      const c = document.createElement('div');
+      c.className = 'conf';
+      const size = 6 + Math.random() * 10;
+      c.style.cssText = `
+        width:${size}px;height:${size * (Math.random()>0.5?1:2.5)}px;
+        left:${Math.random()*100}%;
+        background:${confColors[Math.floor(Math.random()*confColors.length)]};
+        animation-duration:${3+Math.random()*4}s;
+        animation-delay:${Math.random()*3}s;
+        border-radius:${Math.random()>0.5?'50%':'2px'};
+      `;
+      container.appendChild(c);
+    }
+  }
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Show slot4 on mobile
+  if (window.innerWidth <= 600) {
+    document.getElementById('slot4').style.display = 'flex';
+  }
+
+  // Confetti on finale scroll
+  const finaleObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) spawnConfetti(); });
+  }, { threshold: 0.3 });
+  finaleObs.observe(document.querySelector('.finale'));
+</script>
+</body>
+</html>
